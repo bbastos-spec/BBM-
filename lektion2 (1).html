@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hör-Sehtraining B2.1 · Lektion 2 In der Firma</title>
+<style>
+:root{--navy:#20334f;--blue:#dce8f5;--pale:#f5f7fa;--gold:#fff0bd;--ink:#18212e;--line:#cbd3dc;--ok:#e9f5ed}
+*{box-sizing:border-box}body{margin:0;background:#eef1f5;color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+header{background:var(--navy);color:#fff;padding:24px max(20px,calc((100vw - 1100px)/2))}h1{margin:0 0 6px;font-size:clamp(23px,3vw,34px)}header p{margin:0;opacity:.9}
+main{max-width:1100px;margin:22px auto;padding:0 18px 50px}.notice{background:var(--gold);border-left:5px solid #d5a800;padding:14px 16px;margin-bottom:18px}.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0}.tabs button,.play,.solution-btn{border:0;border-radius:7px;font-weight:700;cursor:pointer}.tabs button{padding:9px 13px;background:#fff;color:var(--navy);border:1px solid var(--line)}.tabs button.active{background:var(--navy);color:#fff}.card{display:none;background:#fff;border-radius:12px;padding:clamp(16px,3vw,28px);box-shadow:0 4px 18px #16233818}.card.active{display:block}.meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 17px}.tag{background:var(--blue);padding:5px 9px;border-radius:999px;font-size:.9rem;font-weight:700}.player{aspect-ratio:16/9;background:#10151d;border-radius:9px;overflow:hidden;display:grid;place-items:center;position:relative}.player iframe,.player>div{width:100%;height:100%;border:0}.player>.play{position:absolute;z-index:3}.play{padding:13px 20px;background:#d71920;color:#fff;font-size:1rem}.fallback{font-size:.9rem;margin:8px 0 22px}.work{background:var(--pale);border:1px solid var(--line);padding:15px 17px;border-radius:9px}.work h3{margin-top:0}.statements{list-style:none;padding:0;margin:0}.statements li{background:#fff;border-bottom:1px solid #e1e5ea;padding:10px 12px}.statements li:last-child{border:0}.rf{float:right;white-space:nowrap;font-weight:bold;margin-left:12px}.solution-btn{margin-top:14px;padding:9px 13px;background:var(--navy);color:#fff}.solutions{display:none;background:var(--ok);padding:13px 16px;margin-top:10px;border-radius:8px}.solutions.show{display:block}.solutions li{margin-bottom:7px}.teacher{color:#525e6c;font-size:.9rem}.workflow{background:#fff;padding:16px 18px;border-radius:10px;border:1px solid var(--line);margin-bottom:18px}.workflow ol{margin:7px 0 0;padding-left:22px}@media print{header,.tabs,.player,.fallback,.solution-btn,.notice{display:none!important}body{background:#fff}.card{display:block!important;box-shadow:none;page-break-after:always}.solutions{display:none!important}main{margin:0;max-width:none}.work{border:0;padding:0}}
+.caption-btn{border:1px solid var(--navy);border-radius:7px;background:#fff;color:var(--navy);font-weight:700;padding:8px 12px;cursor:pointer;margin-top:9px}.caption-status{font-size:.9rem;margin-left:8px;color:#526070}
+.scrub{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:10px;margin:12px 0 3px}.scrub input{width:100%;accent-color:var(--navy);cursor:pointer}.scrub span{font-variant-numeric:tabular-nums;font-size:.9rem;color:#526070}.scrub .remaining{text-align:right}
+</style>
+</head>
+<body>
+<header><h1>Hör-Sehtraining · Lektion 2: In der Firma</h1><p>Sicher! aktuell B2.1 · fünf authentische Videosequenzen · Prüfungsformat Richtig/Falsch</p></header>
+<main>
+<div class="notice"><strong>Für den Unterricht:</strong> Untertitel bei beiden Durchgängen ausschalten. Die Aussagen erst nach dem ersten Sehen öffnen bzw. austeilen. Pro Sequenz sind insgesamt etwa 20 Minuten vorgesehen.</div>
+<section class="workflow"><strong>Ablauf (20 Minuten)</strong><ol><li>Titel und Standbild: Vermutungen äußern (2 Min.).</li><li>Erstes Sehen: globales Verstehen, noch ohne Aussagen.</li><li>Aussagen lesen (1 Min.).</li><li>Zweites Sehen: Richtig/Falsch entscheiden.</li><li>Antworten zu zweit vergleichen und anschließend im Kurs besprechen (6–7 Min.).</li></ol></section>
+<nav class="tabs" id="tabs"></nav><div id="cards"></div>
+</main>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+let youtubeReady=false;
+let youtubeWaiters=[];
+window.onYouTubeIframeAPIReady=()=>{youtubeReady=true;youtubeWaiters.splice(0).forEach(f=>f())};
+function whenYouTubeReady(fn){youtubeReady&&window.YT&&YT.Player?fn():youtubeWaiters.push(fn)}
+let activePlayer=null,activeCard=null,guardTimer=null,captionsEnabled=false;
+function captionsOff(player){
+ try{player.unloadModule('captions')}catch(e){}
+ try{player.unloadModule('cc')}catch(e){}
+ try{player.setOption('captions','track',{})}catch(e){}
+}
+function captionsOn(player){
+ try{player.loadModule('captions')}catch(e){}
+ try{player.loadModule('cc')}catch(e){}
+ const selectGerman=()=>{
+  try{player.setOption('captions','track',{languageCode:'de'})}catch(e){}
+  try{player.setOption('cc','track',{languageCode:'de'})}catch(e){}
+ };
+ selectGerman();
+ setTimeout(selectGerman,300);
+}
+function setCaptionUi(card,enabled,message){
+ const button=card.querySelector('.caption-btn');
+ const status=card.querySelector('.caption-status');
+ button.textContent=enabled?'CC · Untertitel ausschalten':'CC · Untertitel einschalten';
+ status.textContent=message||(enabled?'Untertitel eingeschaltet.':'Untertitel ausgeschaltet.');
+}
+function clock(seconds){const s=Math.max(0,Math.round(seconds));return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function playExcerpt(host,v){
+ if(activePlayer&&activePlayer.destroy){try{activePlayer.destroy()}catch(e){}}
+ clearInterval(guardTimer);
+ const card=host.closest('.card');
+ activeCard=card;captionsEnabled=false;setCaptionUi(card,false);
+ const mount=document.createElement('div');host.innerHTML='';host.appendChild(mount);
+ whenYouTubeReady(()=>{
+  let finished=false;
+  const range=card.querySelector('.scrub input'),elapsed=card.querySelector('.elapsed'),remaining=card.querySelector('.remaining');
+  range.max=v.end-v.start;range.value=0;elapsed.textContent='00:00';remaining.textContent=clock(v.end-v.start);
+  activePlayer=new YT.Player(mount,{videoId:v.id,playerVars:{start:v.start,end:v.end,autoplay:1,controls:0,disablekb:1,rel:0,cc_load_policy:0,cc_lang_pref:'de',playsinline:1,origin:window.location.origin},events:{
+   onReady:e=>{captionsOff(e.target);setCaptionUi(card,false);setTimeout(()=>{if(!captionsEnabled)captionsOff(e.target)},600);range.oninput=()=>{finished=false;e.target.seekTo(v.start+Number(range.value),true);elapsed.textContent=clock(range.value);remaining.textContent=clock(v.end-v.start-Number(range.value))};e.target.seekTo(v.start,true);e.target.playVideo();guardTimer=setInterval(()=>{const position=Math.max(0,Math.min(v.end-v.start,e.target.getCurrentTime()-v.start));range.value=position;elapsed.textContent=clock(position);remaining.textContent=clock(v.end-v.start-position);if(!finished&&e.target.getCurrentTime()>=v.end-.15){finished=true;clearInterval(guardTimer);e.target.pauseVideo();range.value=v.end-v.start;elapsed.textContent=clock(v.end-v.start);remaining.textContent='00:00';const done=document.createElement('button');done.className='play';done.textContent='↻ Ausschnitt noch einmal abspielen';done.onclick=()=>playExcerpt(host,v);host.appendChild(done)}},200)},
+   onStateChange:e=>{if(e.data===YT.PlayerState.ENDED&&!finished){finished=true;clearInterval(guardTimer)}}
+  }});
+ });
+}
+const videos=[
+{n:1,id:'h3qh1zvVkvg',title:'Spätschicht in der Bäckerei: Neue Arbeitszeiten',source:'ZDFheute Nachrichten',start:46,end:221,time:'00:46–03:41',q:[
+['Der Bäckergeselle arbeitet nachts, weil ihm dadurch tagsüber mehr Zeit für seine Familie bleibt.',true,'Er sagt, dass nachts ohnehin alle schlafen und er deshalb tagsüber mehr Zeit für seine Familie hat.'],
+['Die neue Spätschicht beginnt zwei Stunden später als die traditionelle Frühschicht.',true,'Sie beginnt um fünf Uhr statt um drei Uhr.'],
+['Dank neuer Mehlsorten muss der Brotteig kürzer reifen.',false,'Die neuen Mehlsorten ermöglichen eine längere Reifezeit.'],
+['Vorbereitete Teiglinge verringern die Zahl der Beschäftigten, die nachts arbeiten müssen.',true,'Die Teiglinge werden aus der Kühlung genommen und direkt gebacken; dadurch werden nachts weniger Beschäftigte gebraucht.'],
+['Luca hält den späteren Arbeitsbeginn für problematisch, weil er dann weniger ausgeschlafen ist.',false,'Er findet die Uhrzeit gut und sagt, dass er ausgeschlafen ist.'],
+['Die Bäckerei möchte mit den veränderten Arbeitszeiten vor allem ältere Fachkräfte gewinnen.',false,'Die veränderten Arbeitszeiten sollen besonders den Beruf für jüngere Menschen attraktiver machen.']]},
+{n:2,id:'YdVYg3nj3j8',title:'Was bringt die Vier-Tage-Woche?',source:'tagesschau',start:22,end:208,time:'00:22–03:28',q:[
+['Im Reiseunternehmen haben alle Beschäftigten montags und freitags gleichzeitig frei.',false,'Das Team wechselt sich ab; montags und freitags arbeitet jeweils die Hälfte der Beschäftigten.'],
+['Die wöchentliche Arbeitszeit wurde um zehn Prozent reduziert, obwohl an drei Tagen länger gearbeitet wird.',true,'Von Dienstag bis Donnerstag wird länger gearbeitet, insgesamt aber zehn Prozent weniger.'],
+['Das Modell scheitert im Reiseunternehmen vor allem an zu wenigen Buchungen am Wochenende.',false,'Viele Kundinnen und Kunden buchen am Wochenende; deshalb fällt montags besonders viel Arbeit an.'],
+['Im Produktionsbetrieb sinkt mit der Arbeitszeit auch der Lohn um zehn Prozent.',false,'Die Arbeitszeit sinkt um zehn Prozent, der Verdienst bleibt jedoch gleich.'],
+['Kürzere Besprechungen und optimierte Abläufe sollen den Zeitverlust ausgleichen.',true,'Im Büro werden Besprechungen und Telefonate verkürzt; in der Produktion werden die Abläufe optimiert.'],
+['Nach Ansicht der Professorin muss ein Arbeitszeitmodell zur privaten und betrieblichen Situation passen.',true,'Sie betont, dass das Modell sowohl zu den Beschäftigten als auch zum Unternehmen passen muss.']]},
+{n:3,id:'nSyJPleHOwg',title:'Wenn die Arbeit unglücklich macht',source:'37 Grad / ZDF',start:62,end:221,time:'01:02–03:41',q:[
+['Unter den 25- bis 34-Jährigen ist fehlende Wertschätzung einer der genannten Kündigungsgründe.',true,'34,2 Prozent der Befragten fühlen sich nicht wertgeschätzt.'],
+['Die Lehrerin glaubt, dass sie den eigenen Ansprüchen an ihren Unterricht problemlos gerecht wird.',false,'Sie hat zu wenig Zeit für die Unterrichtsvorbereitung und wird ihren eigenen Ansprüchen nicht gerecht.'],
+['In der Wissenschaft wird von Beschäftigten nur erwartet, regelmäßig zu publizieren.',false,'Auch Vorträge, Konferenzen und der Aufbau eines Netzwerks werden genannt.'],
+['Eine Gesprächspartnerin berichtet, nach einem belastenden Dienst im Auto geweint zu haben.',true,'Nach einem langen und stressigen Dienst saß sie weinend im Auto.'],
+['Roland Mack erklärt, er könne sich ein Leben ohne Arbeit gut vorstellen.',false,'Er sagt ausdrücklich, dass er ohne Arbeit nicht leben könnte.'],
+['Eine Teilnehmerin versteht Macks Leidenschaft, möchte ihr eigenes Leben aber nicht der Arbeit opfern.',true,'Sie kann seine Begeisterung für die Arbeit nachvollziehen, zieht für ihr eigenes Leben jedoch eine andere Grenze.']]},
+{n:4,id:'dft8ikD9U2A',title:'Unternehmenskultur: Vielfalt als Vorteil',source:'DW Deutsch',start:3,end:155,time:'00:03–02:35',q:[
+['Das Unternehmen versteht unter Vielfalt vor allem sichtbare Unterschiede zwischen den Beschäftigten.',false,'Zur Vielfalt gehören auch Kreativität, Erfahrungen, Wissen und Fähigkeiten.'],
+['Bei Henkel arbeiten in der deutschen Zentrale Menschen aus mehr als sechzig Ländern.',true,'Im Beitrag ist von Beschäftigten aus über sechzig Ländern die Rede.'],
+['Die internationale Belegschaft soll dem Unternehmen helfen, regionale Kundenbedürfnisse besser zu verstehen.',true,'Beschäftigte aus den jeweiligen Regionen kennen die dortigen Märkte und Kundenbedürfnisse besonders gut.'],
+['Das Shampoo für muslimische Märkte entstand unabhängig von den Erfahrungen internationaler Mitarbeitender.',false,'Das Produkt wird als Beispiel dafür genannt, wie unterschiedliche Erfahrungen neue Ideen ermöglichen.'],
+['Anitas Eltern konnten ihr aus eigener Erfahrung erklären, wie ein Studium organisiert ist.',false,'Ihre Eltern kennen sich mit dem Studium nicht aus.'],
+['Das Förderprogramm verbindet finanzielle Unterstützung mit Mentoring.',true,'Neben finanzieller Hilfe werden auch Mentorinnen und Mentoren angeboten.']]},
+{n:5,id:'17VhFfVXZrM',title:'Zerstört die Generation Z die Arbeitswelt?',source:'ZDFheute Nachrichten / Auf der Couch',start:493,end:724,time:'08:13–12:04',q:[
+['Robin vergleicht das gute Gefühl nach erfolgreicher Arbeit mit dem Gefühl nach intensivem Sport.',true,'Er sagt, dass in beiden Fällen Glückshormone ausgeschüttet werden können.'],
+['Für Robin bilden vierzig Wochenstunden eine natürliche Grenze der menschlichen Leistungsfähigkeit.',false,'Er bezeichnet die Grenze von vierzig Stunden als künstlich.'],
+['Eine Teilnehmerin betont, dass das Arbeitsschutzgesetz in erster Linie Beschäftigte schützen soll.',true,'Sie unterscheidet zwischen Arbeitgebern und Arbeitnehmern und nennt den Schutz der Beschäftigten als Zweck des Gesetzes.'],
+['Robin bestreitet, dass Burnout eine ernsthafte Erkrankung sein kann.',false,'Er erkennt Burnout als ernsthafte Krankheit an, hält den Begriff aber manchmal für ein Modeetikett.'],
+['Quiet Quitting bedeutet nach einer Gegenposition, dass Beschäftigte während der Arbeitszeit überhaupt nichts tun.',false,'Nach dieser Position erfüllen sie ihre vereinbarten Aufgaben, leisten aber nicht ständig zusätzliche Arbeit.'],
+['Eine Teilnehmerin bezweifelt, dass zwei zusätzliche Wochenstunden den Fachkräftemangel lösen können.',true,'Sie hält eine Verlängerung von vierzig auf zweiundvierzig Stunden nicht für eine ausreichende Lösung.']]}
+];
+const tabs=document.getElementById('tabs'),cards=document.getElementById('cards');
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+videos.forEach((v,i)=>{
+ const b=document.createElement('button');b.textContent=`Video ${v.n}`;b.onclick=()=>show(i);tabs.appendChild(b);
+ const c=document.createElement('section');c.className='card';c.innerHTML=`<h2>${v.n}. ${esc(v.title)}</h2><div class="meta"><span class="tag">${esc(v.source)}</span><span class="tag">Ausschnitt ${v.time}</span><span class="tag">${v.end-v.start} Sekunden</span></div><div class="player"><button class="play">▶ Ausschnitt abspielen</button></div><div class="scrub"><span class="elapsed">00:00</span><input type="range" min="0" value="0" step="1" aria-label="Position innerhalb des Ausschnitts"><span class="remaining">00:00</span></div><button class="caption-btn">CC · Untertitel einschalten</button><span class="caption-status">Untertitel: standardmäßig ausgeschaltet.</span><p class="fallback"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${v.id}&t=${v.start}s">Originalvideo ab ${v.time.split('–')[0]} öffnen</a> · manuell bei ${v.time.split('–')[1]} stoppen.</p><section class="work"><h3>Aufgabe: Richtig oder falsch?</h3><p>Sehen Sie den Ausschnitt zweimal. Entscheiden Sie beim zweiten Sehen, ob die Aussagen richtig oder falsch sind.</p><ol class="statements">${v.q.map((x,j)=>`<li><span class="rf">R ☐ &nbsp; F ☐</span>${j+1}. ${esc(x[0])}</li>`).join('')}</ol><button class="solution-btn">Lösungen für die Lehrkraft anzeigen</button><div class="solutions"><ol>${v.q.map(x=>`<li><strong>${x[1]?'Richtig':'Falsch'}.</strong> ${esc(x[2])}</li>`).join('')}</ol><p class="teacher">Die Begründungen beruhen auf den überprüften deutschen Untertiteln der angegebenen Sequenz.</p></div></section>`;
+ c.querySelector('.play').onclick=()=>playExcerpt(c.querySelector('.player'),v);
+ c.querySelector('.caption-btn').onclick=()=>{
+  if(!activePlayer||activeCard!==c){setCaptionUi(c,false,'Starten Sie zuerst das Video.');return}
+  captionsEnabled=!captionsEnabled;
+  if(captionsEnabled)captionsOn(activePlayer);else captionsOff(activePlayer);
+  setCaptionUi(c,captionsEnabled);
+ };
+ c.querySelector('.solution-btn').onclick=e=>{const s=c.querySelector('.solutions');s.classList.toggle('show');e.target.textContent=s.classList.contains('show')?'Lösungen ausblenden':'Lösungen für die Lehrkraft anzeigen'};
+ cards.appendChild(c);
+});
+function show(i){if(activePlayer&&activePlayer.destroy){try{activePlayer.destroy()}catch(e){}}activePlayer=null;activeCard=null;captionsEnabled=false;clearInterval(guardTimer);[...tabs.children].forEach((b,j)=>b.classList.toggle('active',i===j));[...cards.children].forEach((c,j)=>c.classList.toggle('active',i===j));window.scrollTo({top:0,behavior:'smooth'})}show(0);
+</script>
+</body></html>
