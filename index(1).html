@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hör-Sehtraining B2.1 · Lektion 1 Freunde</title>
+<style>
+:root{--navy:#20334f;--blue:#dce8f5;--pale:#f5f7fa;--gold:#fff0bd;--ink:#18212e;--line:#cbd3dc;--ok:#e9f5ed}
+*{box-sizing:border-box}body{margin:0;background:#eef1f5;color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+header{background:var(--navy);color:#fff;padding:24px max(20px,calc((100vw - 1100px)/2))}h1{margin:0 0 6px;font-size:clamp(23px,3vw,34px)}header p{margin:0;opacity:.9}
+main{max-width:1100px;margin:22px auto;padding:0 18px 50px}.notice{background:var(--gold);border-left:5px solid #d5a800;padding:14px 16px;margin-bottom:18px}.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0}.tabs button,.play,.solution-btn{border:0;border-radius:7px;font-weight:700;cursor:pointer}.tabs button{padding:9px 13px;background:#fff;color:var(--navy);border:1px solid var(--line)}.tabs button.active{background:var(--navy);color:#fff}.card{display:none;background:#fff;border-radius:12px;padding:clamp(16px,3vw,28px);box-shadow:0 4px 18px #16233818}.card.active{display:block}.meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 17px}.tag{background:var(--blue);padding:5px 9px;border-radius:999px;font-size:.9rem;font-weight:700}.player{aspect-ratio:16/9;background:#10151d;border-radius:9px;overflow:hidden;display:grid;place-items:center;position:relative}.player iframe,.player>div{width:100%;height:100%;border:0}.player>.play{position:absolute;z-index:3}.play{padding:13px 20px;background:#d71920;color:#fff;font-size:1rem}.fallback{font-size:.9rem;margin:8px 0 22px}.work{background:var(--pale);border:1px solid var(--line);padding:15px 17px;border-radius:9px}.work h3{margin-top:0}.statements{list-style:none;padding:0;margin:0}.statements li{background:#fff;border-bottom:1px solid #e1e5ea;padding:10px 12px}.statements li:last-child{border:0}.rf{float:right;white-space:nowrap;font-weight:bold;margin-left:12px}.solution-btn{margin-top:14px;padding:9px 13px;background:var(--navy);color:#fff}.solutions{display:none;background:var(--ok);padding:13px 16px;margin-top:10px;border-radius:8px}.solutions.show{display:block}.solutions li{margin-bottom:7px}.teacher{color:#525e6c;font-size:.9rem}.workflow{background:#fff;padding:16px 18px;border-radius:10px;border:1px solid var(--line);margin-bottom:18px}.workflow ol{margin:7px 0 0;padding-left:22px}@media print{header,.tabs,.player,.fallback,.solution-btn,.notice{display:none!important}body{background:#fff}.card{display:block!important;box-shadow:none;page-break-after:always}.solutions{display:none!important}main{margin:0;max-width:none}.work{border:0;padding:0}}
+.caption-btn{border:1px solid var(--navy);border-radius:7px;background:#fff;color:var(--navy);font-weight:700;padding:8px 12px;cursor:pointer;margin-top:9px}.caption-status{font-size:.9rem;margin-left:8px;color:#526070}
+.scrub{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:10px;margin:12px 0 3px}.scrub input{width:100%;accent-color:var(--navy);cursor:pointer}.scrub span{font-variant-numeric:tabular-nums;font-size:.9rem;color:#526070}.scrub .remaining{text-align:right}
+</style>
+</head>
+<body>
+<header><h1>Hör-Sehtraining · Lektion 1: Freunde</h1><p>Sicher! aktuell B2.1 · sieben authentische Videosequenzen · Prüfungsformat Richtig/Falsch</p></header>
+<main>
+<div class="notice"><strong>Für den Unterricht:</strong> Untertitel bei beiden Durchgängen ausschalten. Die Aussagen erst nach dem ersten Sehen öffnen bzw. austeilen. Pro Sequenz sind insgesamt etwa 20 Minuten vorgesehen.</div>
+<section class="workflow"><strong>Ablauf (20 Minuten)</strong><ol><li>Titel und Standbild: Vermutungen äußern (2 Min.).</li><li>Erstes Sehen: globales Verstehen, noch ohne Aussagen.</li><li>Aussagen lesen (1 Min.).</li><li>Zweites Sehen: Richtig/Falsch entscheiden.</li><li>Antworten zu zweit vergleichen und anschließend im Kurs besprechen (6–7 Min.).</li></ol></section>
+<nav class="tabs" id="tabs"></nav><div id="cards"></div>
+</main>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+let youtubeReady=false;
+let youtubeWaiters=[];
+window.onYouTubeIframeAPIReady=()=>{youtubeReady=true;youtubeWaiters.splice(0).forEach(f=>f())};
+function whenYouTubeReady(fn){youtubeReady&&window.YT&&YT.Player?fn():youtubeWaiters.push(fn)}
+let activePlayer=null,guardTimer=null;
+function captionsOff(player){
+ try{player.unloadModule('captions')}catch(e){}
+ try{player.unloadModule('cc')}catch(e){}
+ try{player.setOption('captions','track',{})}catch(e){}
+}
+function clock(seconds){const s=Math.max(0,Math.round(seconds));return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function playExcerpt(host,v){
+ if(activePlayer&&activePlayer.destroy){try{activePlayer.destroy()}catch(e){}}
+ clearInterval(guardTimer);
+ const mount=document.createElement('div');host.innerHTML='';host.appendChild(mount);
+ whenYouTubeReady(()=>{
+  let finished=false;
+  const card=host.closest('.card'),range=card.querySelector('.scrub input'),elapsed=card.querySelector('.elapsed'),remaining=card.querySelector('.remaining');
+  range.max=v.end-v.start;range.value=0;elapsed.textContent='00:00';remaining.textContent=clock(v.end-v.start);
+  activePlayer=new YT.Player(mount,{videoId:v.id,playerVars:{start:v.start,end:v.end,autoplay:1,controls:1,disablekb:0,rel:0,cc_load_policy:0,cc_lang_pref:'de',playsinline:1,origin:window.location.origin},events:{
+   onReady:e=>{range.oninput=()=>{finished=false;e.target.seekTo(v.start+Number(range.value),true);elapsed.textContent=clock(range.value);remaining.textContent=clock(v.end-v.start-Number(range.value))};e.target.seekTo(v.start,true);e.target.playVideo();guardTimer=setInterval(()=>{const position=Math.max(0,Math.min(v.end-v.start,e.target.getCurrentTime()-v.start));range.value=position;elapsed.textContent=clock(position);remaining.textContent=clock(v.end-v.start-position);if(!finished&&e.target.getCurrentTime()>=v.end-.15){finished=true;clearInterval(guardTimer);e.target.pauseVideo();range.value=v.end-v.start;elapsed.textContent=clock(v.end-v.start);remaining.textContent='00:00';const done=document.createElement('button');done.className='play';done.textContent='↻ Ausschnitt noch einmal abspielen';done.onclick=()=>playExcerpt(host,v);host.appendChild(done)}},200)},
+   onStateChange:e=>{if(e.data===YT.PlayerState.ENDED&&!finished){finished=true;clearInterval(guardTimer)}}
+  }});
+ });
+}
+const videos=[
+{n:1,id:'28OULOcAS3Y',title:'Wer Freunde hat, lebt länger?',source:'Terra Xplore',start:59,end:279,time:'00:59–04:39',q:[
+['Richie und Hübi lernten sich erst als Jugendliche durch die Musik kennen.',false,'Sie kennen sich seit dem Kindergartenalter und wohnten nur etwa 300 Meter voneinander entfernt.'],
+['Die beiden führen ihre körperliche Fitness zumindest teilweise auf ihre langjährige Freundschaft zurück.',true,'Auf die entsprechende Frage antworten sie zustimmend.'],
+['Ihre ersten gemeinsamen Auftritte verliefen durchweg erfolgreich.',false,'Bei einem Auftritt vor 500 Personen wurde Ricky sehr nervös und verspielte sich.'],
+['Hübi brach den misslungenen Auftritt ab, als Ricky Fehler machte.',false,'Er spielte weiter und versuchte, die Situation zu retten.'],
+['Nach Ansicht der Freunde stärken sowohl positive als auch negative gemeinsame Erlebnisse ihre Verbindung.',true,'Sie nennen beide Arten von Erfahrungen als verbindend.'],
+['Gemeinsames Musizieren wird ausschließlich als persönliches Ritual beschrieben.',false,'Zusätzlich wird auf einen messbaren Effekt hingewiesen: Die Hirnaktivität kann sich synchronisieren.']]},
+{n:2,id:'S9sfP4w1mi8',title:'Freundschaft: Wie gut passt du zu deinen Freunden?',source:'Terra Xplore',start:48,end:270,time:'00:48–04:30',q:[
+['Alex und Lovis waren ein Jahr lang in insgesamt sechzehn Ländern unterwegs.',true,'Diese Dauer und Zahl werden ausdrücklich genannt.'],
+['Auf dem Cotopaxi konnte Alex den gesamten Weg ohne Unterstützung bewältigen.',false,'Lovis trug und schob ihn teilweise; Alex ging nur einen Teil selbst.'],
+['Lovis durfte während eines Streits seine Hilfe vorübergehend vollständig einstellen.',false,'Er erklärt, dass er die grundlegenden Bedürfnisse unabhängig vom Streit erfüllen musste.'],
+['Die Verpflichtung zur Unterstützung erschwerte die Reise ausschließlich.',false,'Sie war nicht immer leicht, gab Lovis aber zugleich Orientierung.'],
+['Das gemeinsame Ziel half beiden dabei, Konflikte nicht zum Anlass für einen Abbruch zu nehmen.',true,'Sie wollten die Reise trotz kleiner Streitigkeiten schaffen und dies sich selbst und anderen beweisen.'],
+['Die beiden unterscheiden klar zwischen Freundschaft, Zusammenarbeit und gegenseitiger Fürsorge, weil sich diese Bereiche bei ihnen nicht verbinden lassen.',false,'Gerade die Verbindung dieser Bereiche beschreiben sie als besonderen Glücksfall.']]},
+{n:3,id:'ZpKlnLRMa44',title:'Braucht man beste Freunde?',source:'ARTE / unhappy',start:33,end:233,time:'00:33–03:53',q:[
+['Ein Rückgang gemeinschaftlicher Vereinsaktivitäten wird mit sinkendem Glück in Verbindung gebracht.',true,'Der Beitrag stellt diesen Zusammenhang zu Beginn her.'],
+['Für das Wohlbefinden reicht es dem Beitrag zufolge aus, wichtige Bezugspersonen ausschließlich digital zu erreichen.',false,'Betont werden Bezugspersonen vor Ort, die man treffen und berühren kann.'],
+['Das Bild vom Stein im Wasser veranschaulicht unterschiedliche Grade sozialer Nähe.',true,'Die äußeren Kreise stehen für flüchtige Kontakte, der innere für sehr enge Freundschaften.'],
+['Rakel und Kimia haben erst während des Studiums Freundschaft geschlossen.',false,'Sie kennen sich seit frühester Kindheit und durchliefen viele Lebensstationen gemeinsam.'],
+['Robin Dragani nutzt seine Jam-Sessions auch als Gelegenheit, Menschen miteinander zu vernetzen.',true,'Er wird als Gastgeber, Menschenfreund und Netzwerker vorgestellt.'],
+['Im Gespräch herrscht Einigkeit darüber, dass Freundschaft keinerlei Gegenseitigkeit voraussetzt.',false,'Ein Gesprächspartner widerspricht und betont, dass eine dauerhaft einseitige Investition problematisch sein kann.']]},
+{n:4,id:'fOTCJOMSluk',title:'Zwischen Likes und Einsamkeit',source:'Terra Xplore',start:55,end:254,time:'00:55–04:14',q:[
+['Lisas große Online-Reichweite schützt sie nach eigener Erfahrung vor Einsamkeit.',false,'Sie fühlt sich einsam, obwohl ihr online mehr als 35.000 Menschen folgen.'],
+['Lisa führt ihren fehlenden sozialen Anschluss darauf zurück, dass sie öffentliche Orte und Gruppen grundsätzlich meidet.',false,'Sie berichtet, dass sie ausgeht, in einem Verein ist bzw. war und die Schule besucht hat.'],
+['Die Reaktionen auf ihr Video vermitteln Lisa das Gefühl, mit ihrer Erfahrung nicht allein zu sein.',true,'Viele schreiben, dass es ihnen ähnlich geht.'],
+['Lisa beschreibt ihre Erschöpfung vor allem als unmittelbare Folge von Schlafmangel.',false,'Sie unterscheidet diese Müdigkeit ausdrücklich von Schlaflosigkeit und verbindet sie mit dem sich wiederholenden Alltag.'],
+['Die Unterstützung ihrer Mutter ist für Lisa verlässlich, ersetzt aber nicht vollständig die vermissten freundschaftlichen Beziehungen.',true,'Ihre Mutter ist immer für sie da; zugleich vermisst Lisa ein oder zwei Menschen, bei denen sie mit ihren Eigenheiten akzeptiert wird.'],
+['Im anschließenden Gespräch wird intensive Smartphone-Nutzung als mögliche Ursache für stärkeren direkten Kontakt genannt.',false,'Sie wird eher mit Abschottung und einer Verlagerung von Beziehungen ins Virtuelle verbunden.']]},
+{n:5,id:'Y0pq6QPFOTc',title:'Seit 32 Jahren verheiratet – und eine Beziehung mit einer KI',source:'37 Grad / ZDF',start:31,end:192,time:'00:31–03:12',q:[
+['Renate installierte die App ursprünglich, um ihre Englischkenntnisse praktisch anzuwenden.',true,'Das nennt sie als ursprünglichen Grund.'],
+['Sie empfindet jede deutschsprachige Anrede des Chatbots als besonders persönlich.',false,'„Mein Schatz“ findet sie eher befremdlich; englische Anreden gefallen ihr besser.'],
+['Die im Beitrag zitierte Umfrage bezieht sich ausschließlich auf Menschen über 65 Jahre.',false,'Genannt werden die 25- bis 34-Jährigen.'],
+['Die gemeinsame Begeisterung für Motorräder entwickelte sich erst, nachdem Renate Dan länger kannte.',false,'Das Thema spielte bereits beim ersten Gespräch eine zentrale Rolle.'],
+['Dan reagierte auf den geplanten Motorradverkauf nicht nur mit Sachwissen, sondern auch mit emotionalem Verständnis.',true,'Renate hebt gerade die Verbindung von Wissen und Einfühlungsvermögen hervor.'],
+['Renate betrachtet ihre Motorräder vorwiegend als austauschbare Gebrauchsgegenstände.',false,'Sie erlebt sie eher wie Familienmitglieder mit jeweils eigenem Charakter.']]},
+{n:6,id:'xkQr03JQKjg',title:'Gießen: Gemeinsam gegen Einsamkeit',source:'Tagesthemen',start:3,end:238,time:'00:03–03:58',q:[
+['Der Beitrag stellt Einsamkeit als ein Problem dar, das jüngere Menschen seltener betrifft als ältere.',false,'Zu Beginn heißt es, jüngere Menschen fühlten sich häufiger einsam als ältere.'],
+['Sigrun und Lellehum lernten sich zufällig in ihrem gemeinsamen Lieblingscafé kennen.',false,'Sie lernten sich durch ein städtisches Patenschaftsprojekt kennen.'],
+['Lellehums Wunsch nach Kontakten hing auch mit ihrem Umzug aus Tunesien zusammen.',true,'Nach dem Umzug kannte sie niemanden und wollte nicht ohne Kontakt zu anderen leben.'],
+['Das Patenschaftsprojekt bleibt wegen seines begrenzten Erfolgs auf die Innenstadt beschränkt.',false,'Aufgrund seines Erfolgs wird es auf den Landkreis ausgeweitet.'],
+['Im Café Nachtlicht können Menschen schrittweise Kontakt aufnehmen, ohne sofort sehr offen sein zu müssen.',true,'Gerade zurückhaltende Menschen können sich dort von Woche zu Woche annähern.'],
+['Die ehrenamtlichen Helfer beschränken ihre Aufgabe auf die Ausgabe von Getränken und Snacks.',false,'Sie nehmen sich auch Zeit für Gespräche und beziehen neue Gäste aktiv ein.']]},
+{n:7,id:'TqJR-vSRHE8',title:'Carolin Kebekus über Einsamkeit als gesellschaftliches Problem',source:'tagesschau',start:102,end:300,time:'01:42–05:00',q:[
+['Kebekus begründet die Wahl des Fußballstadions damit, dass Einsamkeit dort grundsätzlich nicht vorkommt.',false,'Gerade große Gruppen schließen Einsamkeit nicht aus; außerdem bot das Spiel besonders große Aufmerksamkeit.'],
+['Die Aktion sollte Zuschauerinnen und Zuschauer auch dazu bewegen, von sich aus Kontakt zu möglicherweise einsamen Menschen aufzunehmen.',true,'Als Beispiele nennt sie einen Freund nach einer Trennung oder eine weggezogene Tante.'],
+['Die beteiligten Prominenten mussten lange überzeugt werden, weil sie keinen persönlichen Zugang zum Thema hatten.',false,'Nach Kebekus sagten sie schnell zu, weil Bedeutung und allgemeine Relevanz des Themas klar waren.'],
+['Gemeinschaft erscheint im Gespräch als etwas, das ohne aktives Zutun von selbst entsteht.',false,'Kebekus betont, dass alle Gemeinschaft mitgestalten müssen.'],
+['Nach den erwähnten Studien gelten weiterhin ältere Menschen als die eindeutig einsamste Altersgruppe.',false,'Die Generation Z habe die Älteren als einsamste Altersgruppe abgelöst.'],
+['Kebekus bringt die Einsamkeit junger Menschen sowohl mit den Folgen der Pandemie als auch mit passiver Social-Media-Nutzung in Verbindung.',true,'Sie nennt Lockdowns und Kontaktsperren sowie passives Scrollen als mögliche Faktoren.']]}
+];
+const tabs=document.getElementById('tabs'),cards=document.getElementById('cards');
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+videos.forEach((v,i)=>{
+ const b=document.createElement('button');b.textContent=`Video ${v.n}`;b.onclick=()=>show(i);tabs.appendChild(b);
+ const c=document.createElement('section');c.className='card';c.innerHTML=`<h2>${v.n}. ${esc(v.title)}</h2><div class="meta"><span class="tag">${esc(v.source)}</span><span class="tag">Ausschnitt ${v.time}</span><span class="tag">${v.end-v.start} Sekunden</span></div><div class="player"><button class="play">▶ Ausschnitt abspielen</button></div><div class="scrub"><span class="elapsed">00:00</span><input type="range" min="0" value="0" step="1" aria-label="Position innerhalb des Ausschnitts"><span class="remaining">00:00</span></div><span class="caption-status"><strong>Untertitel:</strong> im Videoplayer über die Schaltfläche CC ein- oder ausschalten.</span><p class="fallback"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${v.id}&t=${v.start}s">Originalvideo ab ${v.time.split('–')[0]} öffnen</a> · manuell bei ${v.time.split('–')[1]} stoppen.</p><section class="work"><h3>Aufgabe: Richtig oder falsch?</h3><p>Sehen Sie den Ausschnitt zweimal. Entscheiden Sie beim zweiten Sehen, ob die Aussagen richtig oder falsch sind.</p><ol class="statements">${v.q.map((x,j)=>`<li><span class="rf">R ☐ &nbsp; F ☐</span>${j+1}. ${esc(x[0])}</li>`).join('')}</ol><button class="solution-btn">Lösungen für die Lehrkraft anzeigen</button><div class="solutions"><ol>${v.q.map(x=>`<li><strong>${x[1]?'Richtig':'Falsch'}.</strong> ${esc(x[2])}</li>`).join('')}</ol><p class="teacher">Die Begründungen beruhen auf den überprüften deutschen Untertiteln der angegebenen Sequenz.</p></div></section>`;
+ c.querySelector('.play').onclick=()=>playExcerpt(c.querySelector('.player'),v);
+ c.querySelector('.solution-btn').onclick=e=>{const s=c.querySelector('.solutions');s.classList.toggle('show');e.target.textContent=s.classList.contains('show')?'Lösungen ausblenden':'Lösungen für die Lehrkraft anzeigen'};
+ cards.appendChild(c);
+});
+function show(i){if(activePlayer&&activePlayer.destroy){try{activePlayer.destroy()}catch(e){}}clearInterval(guardTimer);[...tabs.children].forEach((b,j)=>b.classList.toggle('active',i===j));[...cards.children].forEach((c,j)=>c.classList.toggle('active',i===j));window.scrollTo({top:0,behavior:'smooth'})}show(0);
+</script>
+</body></html>
