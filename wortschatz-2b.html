@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Wortschatz-Check · 2B</title>
+  <meta name="description" content="Interaktiver Wortschatz-Check für 2B: Bingo, Kursbuch und Video.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b5fff'/%3E%3Cpath d='M17 18h30v9H17zm0 19h30v9H17z' fill='white'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#15223a;--blue:#0b5fff;--cyan:#bfefff;--yellow:#ffd84d;--red:#ef476f;--green:#1d9b70;--paper:#f7f9fc;--card:#fff;--line:#dbe3ee}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% 8%,#dff7ff 0 12%,transparent 32%),var(--paper);color:var(--ink);font:17px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+    button{font:inherit}.app{width:min(920px,calc(100% - 28px));margin:24px auto 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}.brand{font-weight:900;letter-spacing:.04em}.score{background:var(--ink);color:white;border-radius:999px;padding:8px 14px;font-weight:800}
+    .progress{height:10px;background:#e5eaf2;border-radius:99px;overflow:hidden;margin-bottom:22px}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#25c8a0);transition:.35s}
+    .panel{background:var(--card);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);border-radius:22px;padding:clamp(22px,5vw,44px);min-height:550px;display:flex;flex-direction:column;justify-content:center}
+    .tag{display:inline-block;width:max-content;background:var(--yellow);border:2px solid var(--ink);padding:5px 11px;border-radius:999px;font-weight:850;font-size:.86rem;text-transform:uppercase;letter-spacing:.05em}h1{font-size:clamp(2rem,6vw,4.2rem);line-height:.98;margin:18px 0}h2{font-size:clamp(1.55rem,4vw,2.45rem);line-height:1.08;margin:18px 0}.lead{font-size:1.14rem;max-width:650px}.muted{color:#5f6f86}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+    .btn{border:2px solid var(--ink);border-radius:14px;background:white;color:var(--ink);padding:13px 18px;font-weight:850;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:.12s}.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}.btn.primary{background:var(--blue);color:white}.btn.next{background:var(--yellow)}
+    .question{font-size:clamp(1.25rem,3vw,1.7rem);font-weight:800;margin:22px 0}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.option{text-align:left;min-height:66px;background:white}.option.correct{background:#d8f7e9;border-color:var(--green)}.option.wrong{background:#ffe1e7;border-color:var(--red)}.option:disabled{cursor:default;color:inherit}.feedback{min-height:55px;margin-top:18px;font-weight:750}.feedback.ok{color:#087653}.feedback.no{color:#b62243}
+    .wordbank{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0}.chip{border:2px solid var(--ink);border-radius:999px;padding:7px 12px;background:var(--cyan);font-weight:750}.inputrow{display:flex;gap:10px;flex-wrap:wrap}.answer{min-width:240px;flex:1;border:2px solid var(--ink);border-radius:14px;padding:13px;font:inherit}.small{font-size:.92rem}.results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.result{border:2px solid var(--ink);border-radius:16px;padding:17px;background:#f8fbff}.result strong{display:block;font-size:1.8rem}.review{columns:2;column-gap:32px;padding-left:22px}.hidden{display:none!important}
+    @media(max-width:650px){.app{margin-top:12px}.panel{min-height:620px;box-shadow:5px 5px 0 var(--ink)}.options,.results{grid-template-columns:1fr}.review{columns:1}.top{align-items:flex-start}.option{min-height:58px}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <header class="top"><div class="brand">WORTSCHATZ-CHECK · 2B</div><div class="score">★ <span id="score">0</span></div></header>
+  <div class="progress"><i id="bar"></i></div>
+  <section class="panel" id="screen"></section>
+</main>
+<script>
+const vocab=[
+ ['der Stau','Auf der Autobahn stehen viele Autos. Nichts bewegt sich.'],
+ ['die Strecke','Der Weg von einem Ort zu einem anderen.'],
+ ['umsteigen','Ein Verkehrsmittel verlassen und mit einem anderen weiterfahren.'],
+ ['die Verspätung','Der Zug kommt später als geplant.'],
+ ['der Anschluss','Der nächste Bus oder Zug, mit dem man weiterfahren möchte.'],
+ ['besetzt','Hier kann niemand sitzen: Der Platz ist nicht frei.'],
+ ['tanken','Benzin oder Diesel in ein Fahrzeug füllen.'],
+ ['pünktlich','Genau zur vereinbarten Zeit.'],
+ ['kostenlos','Man muss nichts bezahlen.'],
+ ['abstellen','Ein Fahrrad oder Auto an einem Ort stehen lassen.'],
+ ['sammeln','Viele Dinge einer Art suchen und behalten.'],
+ ['ungewöhnlich','Anders als normal oder erwartet.'],
+ ['berühmt','Sehr viele Menschen kennen diese Person.'],
+ ['verbringen','Eine bestimmte Zeit irgendwo oder mit etwas sein.'],
+ ['vergessen','Sich an etwas nicht erinnern.'],
+ ['der Zufall','Etwas passiert ungeplant und unerwartet.'],
+ ['glauben','Etwas für wahr oder möglich halten.'],
+ ['empfehlen','Jemandem sagen, dass etwas gut oder passend ist.']
+];
+const context=[
+ {q:'Der Bus sollte um 8 Uhr kommen. Jetzt ist es 8:20 Uhr.',a:'die Verspätung'},
+ {q:'Am Bahnhof wechsle ich vom Zug in die U-Bahn.',a:'umsteigen'},
+ {q:'Das Museum kostet heute keinen Eintritt.',a:'kostenlos'},
+ {q:'Alle kennen diese Schauspielerin.',a:'berühmt'},
+ {q:'Ich lasse mein Fahrrad vor der Schule stehen.',a:'abstellen'},
+ {q:'Auf der Autobahn geht gar nichts mehr.',a:'der Stau'}
+];
+const odd=[
+ {q:'Welche drei Wörter passen zum Verkehr?',opts:['die Strecke','der Anschluss','tanken','berühmt'],a:'berühmt'},
+ {q:'Welches Wort bedeutet NICHT „anders / nicht normal“?',opts:['ungewöhnlich','der Zufall','besetzt','überraschend'],a:'besetzt'},
+ {q:'Welches Wort passt nicht zur Zeit?',opts:['pünktlich','verbringen','die Verspätung','sammeln'],a:'sammeln'},
+ {q:'Welches Wort ist kein Verb?',opts:['vergessen','glauben','empfehlen','besetzt'],a:'besetzt'},
+ {q:'Welches Wort passt nicht zu einem Hobby?',opts:['sammeln','verbringen','glauben','tanken'],a:'tanken'},
+ {q:'Welches Wort hat mit einer Weiterfahrt zu tun?',opts:['der Anschluss','der Zufall','ungewöhnlich','kostenlos'],a:'der Anschluss'}
+];
+const recall=[
+ {q:'Ein Sitzplatz ist nicht frei.',a:'besetzt'},
+ {q:'Du suchst und behältst viele Dinge einer Art.',a:'sammeln'},
+ {q:'Etwas passiert ungeplant.',a:'der Zufall'},
+ {q:'Du bist genau zur vereinbarten Zeit da.',a:'pünktlich'},
+ {q:'Du denkst, dass etwas wahr ist.',a:'glauben'},
+ {q:'Du sagst einer Person, dass ein Film gut ist.',a:'empfehlen'}
+];
+let stage=0,index=0,score=0,answered=false;const screen=document.querySelector('#screen');
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);const norm=s=>s.toLowerCase().trim().replace(/[.,!?]/g,'').replace(/^(der|die|das)\s+/,'');
+function drawStart(){setBar(0);screen.innerHTML=`<span class="tag">Vor der nächsten Stunde</span><h1>18 Wörter.<br>3 schnelle Runden.</h1><p class="lead">Wortschatz aus dem Bingo, dem Kursbuch und dem Video. Übersetzen ist nicht nötig: Denk an die Situation.</p><p class="muted">Arbeite in deinem eigenen Tempo. Fehler gehören zum Lernen.</p><div class="actions"><button class="btn primary" onclick="start()">Los geht's!</button></div>`}
+function start(){stage=1;index=0;draw()}
+function setBar(n){document.querySelector('#bar').style.width=n+'%'}
+function totalDone(){return stage===1?index:stage===2?6+index:12+index}
+function draw(){answered=false;setBar(totalDone()/18*100);if(stage===1)return drawContext();if(stage===2)return drawOdd();if(stage===3)return drawRecall();drawEnd()}
+function makeOpts(answer){let pool=vocab.map(x=>x[0]).filter(x=>x!==answer);return shuffle([answer,...shuffle(pool).slice(0,3)])}
+function drawContext(){if(index>=context.length){stage=2;index=0;return transition('Runde 1 geschafft!','Jetzt kommt der Wortdetektiv: Finde das Wort, das nicht passt.')}let x=context[index],opts=makeOpts(x.a);screen.innerHTML=`<span class="tag">Runde 1 · Blitzwahl</span><h2>Welches Wort passt?</h2><div class="question">${x.q}</div><div class="options">${opts.map(o=>`<button class="btn option" onclick="choose(this,'${esc(o)}','${esc(x.a)}')">${o}</button>`).join('')}</div><div id="fb" class="feedback"></div><div id="next"></div>`}
+function drawOdd(){if(index>=odd.length){stage=3;index=0;return transition('Runde 2 geschafft!','Im Finale gibt es keine Antwortmöglichkeiten. Artikel sind freiwillig.')}let x=odd[index];screen.innerHTML=`<span class="tag">Runde 2 · Wortdetektiv</span><h2>Was passt nicht?</h2><div class="question">${x.q}</div><div class="options">${shuffle(x.opts).map(o=>`<button class="btn option" onclick="choose(this,'${esc(o)}','${esc(x.a)}')">${o}</button>`).join('')}</div><div id="fb" class="feedback"></div><div id="next"></div>`}
+function drawRecall(){if(index>=recall.length){stage=4;return draw()}let x=recall[index];screen.innerHTML=`<span class="tag">Runde 3 · Ohne Netz</span><h2>Welches Wort ist gesucht?</h2><div class="question">${x.q}</div><div class="wordbank"><span class="chip">Substantiv</span><span class="chip">Verb</span><span class="chip">Adjektiv</span></div><div class="inputrow"><input class="answer" id="answer" autocomplete="off" placeholder="Wort eingeben …" onkeydown="if(event.key==='Enter')checkInput()"><button class="btn primary" onclick="checkInput()">Prüfen</button></div><div id="fb" class="feedback"></div><div id="next"></div>`;document.querySelector('#answer').focus()}
+function choose(btn,given,right){if(answered)return;answered=true;document.querySelectorAll('.option').forEach(b=>{b.disabled=true;if(b.textContent===right)b.classList.add('correct')});let ok=given===right;if(!ok)btn.classList.add('wrong');finish(ok,right)}
+function checkInput(){if(answered)return;let inp=document.querySelector('#answer'),right=recall[index].a;answered=true;inp.disabled=true;let ok=norm(inp.value)===norm(right);inp.style.background=ok?'#d8f7e9':'#ffe1e7';finish(ok,right)}
+function finish(ok,right){if(ok){score++;document.querySelector('#score').textContent=score}let fb=document.querySelector('#fb');fb.className='feedback '+(ok?'ok':'no');fb.textContent=ok?'Richtig!':'Fast! Die Lösung ist: '+right;document.querySelector('#next').innerHTML=`<button class="btn next" onclick="next()">Weiter →</button>`}
+function next(){index++;draw()}
+function transition(title,text){setBar(totalDone()/18*100);screen.innerHTML=`<span class="tag">Zwischenstopp</span><h1>${title}</h1><p class="lead">${text}</p><div class="actions"><button class="btn primary" onclick="draw()">Weiter</button></div>`}
+function drawEnd(){setBar(100);let msg=score>=16?'Stark! Du bist bereit.':score>=12?'Gut gemacht! Schau dir die schwierigen Wörter noch einmal an.':'Kein Problem: Wiederholen hilft.';screen.innerHTML=`<span class="tag">Ziel erreicht</span><h1>${score} / 18 Punkte</h1><p class="lead">${msg}</p><div class="results"><div class="result"><strong>${score}</strong>richtig</div><div class="result"><strong>${18-score}</strong>noch üben</div><div class="result"><strong>18</strong>Wörter</div></div><details><summary><b>Alle Wörter ansehen</b></summary><ul class="review">${vocab.map(v=>`<li>${v[0]}</li>`).join('')}</ul></details><div class="actions"><button class="btn primary" onclick="stage=0;index=0;score=0;document.querySelector('#score').textContent=0;drawStart()">Noch einmal</button></div>`}
+function esc(s){return s.replaceAll("'","\\'")}
+drawStart();
+</script>
+</body>
+</html>
