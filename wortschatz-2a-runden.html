@@ -1,0 +1,125 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wortschatz-Duell · 2A</title><style>
+:root{font-family:system-ui,sans-serif;color:#19334b;background:#f4f8f6}*{box-sizing:border-box}body{margin:0}.wrap{max-width:850px;margin:auto;padding:22px 16px}header{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:800;letter-spacing:.08em;font-size:.85rem;color:#176b60}.card{background:white;border:1px solid #d8e5df;border-radius:20px;padding:clamp(20px,4vw,36px);margin-top:18px;box-shadow:0 10px 30px #163d2e0d}h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin:.25em 0}h2{line-height:1.3;font-size:clamp(1.3rem,3vw,1.8rem)}p{line-height:1.55}.badge{display:inline-block;background:#e1f4eb;color:#145c4e;border-radius:30px;padding:7px 13px;font-weight:700;font-size:.85rem}.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:25px 0}button{font:inherit;border:0;cursor:pointer} .opt{background:#f7faf9;border:2px solid #dbe8e2;border-radius:12px;padding:15px;text-align:left;color:#17334b;font-weight:650;min-height:60px}.opt:hover:not(:disabled){border-color:#278875;background:#ecf9f4}.opt.correct{border-color:#16805d;background:#def6e7}.opt.wrong{border-color:#b84646;background:#fce8e7}.opt:disabled{opacity:1;cursor:default}.primary,.secondary{border-radius:11px;padding:13px 20px;font-weight:750}.primary{background:#176f60;color:white}.secondary{background:#edf4f1;color:#174d43}.actions{display:flex;gap:10px;flex-wrap:wrap}.muted{color:#587064;font-size:.94rem}.progress{height:9px;background:#e7efeb;border-radius:8px;overflow:hidden;margin-top:15px}.progress div{height:100%;background:#29a686;transition:width .25s}.status{min-height:2.3em;font-weight:700}.small{font-size:.86rem}.count{color:#44655b;font-weight:650}.hidden{display:none}ul{padding-left:22px}li{margin:.5em 0}@media(max-width:520px){.options{grid-template-columns:1fr}.wrap{padding:16px 12px}}
+</style></head><body><main class="wrap"><header><div class="brand">2A · WORTSCHATZ</div><div class="count" id="total"></div></header><div id="app" class="card"></div></main><script>
+const raw=`besichtigen|Eine Stadt oder ein Schloss als Tourist besuchen.
+kennenlernen|Eine Person zum ersten Mal treffen und mehr über sie erfahren.
+anfangen|Mit etwas beginnen.
+einladen|Jemanden bitten, zu einer Feier oder zum Essen zu kommen.
+vergessen|Etwas nicht mehr wissen oder nicht daran denken.
+zunehmen|Schwerer werden: mehr Kilo wiegen.
+gewinnen|Bei einem Spiel den ersten Platz oder einen Preis bekommen.
+genießen|Etwas mit Freude erleben, zum Beispiel einen Urlaub.
+wandern|Eine längere Strecke zu Fuß in der Natur gehen.
+bleiben|Einen Ort nicht verlassen.
+geschieden|Die Ehe ist offiziell beendet.
+die Ausbildung|Man lernt einen Beruf, zum Beispiel in einer Firma.
+die Bankkauffrau|Sie arbeitet in einer Bank und berät Kunden.
+fließend|Eine Sprache sehr gut und ohne große Pausen sprechen.
+die Innenstadt|Der zentrale Teil einer Stadt.
+der Rentner|Er arbeitet nicht mehr, weil er im Ruhestand ist.
+die Tochter|Das weibliche Kind von Eltern.
+die Prüfung|Hier zeigt man, was man gelernt hat, und bekommt oft eine Note.
+die Verwandten|Personen aus der Familie, zum Beispiel Onkel und Tanten.
+umziehen|Von einer Wohnung in eine andere Wohnung wechseln.
+der Verein|Eine Gruppe von Menschen mit einem gemeinsamen Interesse, zum Beispiel Sport.
+sich anmelden|Sich offiziell für einen Kurs registrieren.
+die Einladung|Eine Nachricht: Jemand bittet dich, zu einem Fest zu kommen.
+die Speisekarte|Hier stehen die Gerichte und Getränke in einem Restaurant.
+die Rechnung|Am Ende im Restaurant steht hier, wie viel man bezahlen muss.
+der Empfang|Hier begrüßt man Gäste und meldet sie im Hotel an.
+verbieten|Sagen: Das darf man nicht tun.
+sich entscheiden|Aus mehreren Möglichkeiten eine wählen.
+empfehlen|Sagen, dass etwas gut ist und jemand es probieren sollte.
+mitbringen|Etwas von zu Hause zu einer anderen Person bringen.
+teilnehmen|Bei einem Kurs oder einer Veranstaltung mitmachen.
+verlieren|Etwas nicht mehr haben und nicht wissen, wo es ist.
+aufstehen|Am Morgen aus dem Bett gehen.
+zurückkommen|Wieder an einen Ort kommen, an dem man schon war.
+helfen|Jemanden unterstützen, wenn er ein Problem hat.
+treffen|Mit jemandem zusammenkommen.
+die Urlaubsreise|Man fährt oder fliegt in den Ferien an einen anderen Ort.
+aus Versehen|Ohne Absicht: Man wollte es nicht machen.
+verschlafen|Zu spät aufwachen und deshalb zu spät kommen.
+sich sonnen|In der Sonne liegen oder sitzen.
+das Kindergeld|Geld, das Eltern vom Staat für ihre Kinder bekommen.
+der Arbeitnehmer|Eine Person, die für eine Firma arbeitet.
+der Regenschirm|Man hält ihn über sich, damit man im Regen trocken bleibt.
+beenden|Etwas zu Ende bringen.
+abschließen|Eine Ausbildung erfolgreich zu Ende machen.
+mieten|Für Geld etwas für eine bestimmte Zeit benutzen, zum Beispiel eine Wohnung.
+weitersuchen|Nicht aufhören zu suchen, obwohl man noch nichts gefunden hat.
+heiraten|Eine Ehe mit einer anderen Person beginnen.
+das Glück|Wenn etwas Gutes durch Zufall passiert, hat man ...
+die Hochzeit|Das Fest, wenn zwei Personen heiraten.
+spannend|Ein Film ist interessant: Man möchte unbedingt wissen, wie es weitergeht.
+gefallen|Etwas gut oder schön finden: Der Film hat mir ...
+das Zelt|Darin kann man auf einem Campingplatz schlafen.
+lügen|Etwas sagen, das nicht wahr ist.
+brechen|Zum Beispiel: Bei einem Unfall wird der Arm verletzt und der Knochen geht kaputt.
+verzeihen|Nach einem Fehler nicht mehr böse auf jemanden sein.
+weinen|Wenn man sehr traurig ist, kommen Tränen aus den Augen.
+sich fühlen|Sagen, wie es einem geht: Ich ... mich heute gut.
+der Regenbogen|Nach dem Regen sieht man manchmal einen bunten Bogen am Himmel.
+die Überstunden|Man arbeitet länger als die normale Arbeitszeit.
+mitnehmen|Eine Person oder Sache von hier an einen anderen Ort bringen.
+einverstanden|Eine Idee ist gut für mich. Ich sage: Ja, ...!
+absagen|Sagen, dass ein geplantes Treffen doch nicht stattfindet.
+zusagen|Eine Einladung annehmen und sagen, dass man kommt.
+vorschlagen|Eine Idee nennen, zum Beispiel: Gehen wir ins Kino!
+sich verabreden|Mit jemandem ein Treffen zu einer bestimmten Zeit planen.
+mitkommen|Mit einer anderen Person zusammen an einen Ort gehen.
+die Lust|Wenn ich etwas gern machen möchte, habe ich ... darauf.
+fröhlich|Gut gelaunt sein und viel lachen.
+unpünktlich|Nicht zur vereinbarten Zeit, sondern zu spät kommen.
+nachts|In der Zeit zwischen Abend und Morgen.
+klettern|Mit Händen und Füßen an einer Felswand nach oben steigen.
+der Krankenpfleger|Er versorgt kranke Menschen, zum Beispiel im Krankenhaus.
+verdienen|Für seine Arbeit Geld bekommen.
+die Erfahrung|Man lernt etwas durch das, was man selbst erlebt oder gemacht hat.
+die Lehre|Man lernt einen Beruf in einer Firma und in der Berufsschule.
+anstrengend|Etwas kostet viel Kraft; danach ist man sehr müde.
+eröffnen|Ein Geschäft zum ersten Mal für Kunden öffnen.
+übersetzen|Einen Text in eine andere Sprache übertragen.
+unterrichten|Als Lehrkraft Wissen vermitteln, zum Beispiel Deutsch.
+die Zukunft|Die Zeit, die nach heute kommt.
+hassen|Etwas überhaupt nicht mögen.
+die Flugbegleiterin|Sie arbeitet im Flugzeug und betreut die Passagiere.
+freiwillig|Man macht etwas, weil man es möchte, nicht weil man muss.
+leihen|Jemandem etwas für eine bestimmte Zeit geben; danach bekommt man es zurück.
+das Handwerk|Zum Beispiel Bäcker und Tischler arbeiten in diesem Bereich.
+sich beeilen|Schnell machen, weil man wenig Zeit hat.
+der Schulabschluss|Man bekommt ihn, wenn man die Schule erfolgreich beendet.
+die Erinnerung|Etwas aus der Vergangenheit, an das man noch denkt.
+streng|Eine Lehrerin verlangt viel und achtet sehr auf Regeln.
+wütend|Sehr böse oder ärgerlich sein.
+furchtbar|Sehr schlecht oder schrecklich.
+glücklich|Man ist sehr zufrieden und freut sich sehr.
+traurig|Man ist unglücklich und hat vielleicht Tränen in den Augen.
+ängstlich|Man hat schnell Angst.
+müde|Man möchte schlafen und hat wenig Energie.
+wach|Man schläft nicht und ist aufmerksam.
+hungrig|Man möchte etwas essen, weil man Hunger hat.
+satt|Man hat genug gegessen und keinen Hunger mehr.
+durstig|Man möchte etwas trinken.
+krank|Man hat zum Beispiel Fieber und fühlt sich nicht gesund.
+gesund|Man ist nicht krank.
+kalt|Die Temperatur ist niedrig; man friert vielleicht.
+heiß|Die Temperatur ist sehr hoch.
+stark|Man hat viel Kraft.
+schwach|Man hat wenig Kraft.
+schnell|Man braucht nur wenig Zeit für eine Strecke.
+langsam|Man braucht viel Zeit für eine Strecke.
+laut|Man kann es sehr gut hören; es macht viel Lärm.
+leise|Man hört es nur wenig; es macht kaum Lärm.
+schüchtern|Man ist in einer Gruppe oft still und spricht nicht gern vor anderen.
+mutig|Man hat vielleicht Angst, aber man macht es trotzdem.
+überrascht|Etwas passiert, womit man nicht gerechnet hat.
+gelangweilt|Man findet etwas nicht interessant und weiß nicht, was man tun soll.
+stolz|Man freut sich über etwas, das man gut gemacht hat.`;
+const words=raw.split('\n').map(s=>{let [word,clue]=s.split('|');return {word,clue}});if(words.some(x=>!x.word||!x.clue)||new Set(words.map(x=>x.word)).size!==words.length)throw Error('Wortliste prüfen');
+const app=document.querySelector('#app');document.querySelector('#total').textContent=words.length+' Wörter';let queue=[],wrong=[],round=[],pos=0,score=0,answered=false,mode='all';const shuffle=a=>{let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};const e=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function home(){app.innerHTML=`<span class="badge">Gemeinsam spielen · ein Gerät pro Paar</span><h1>Wortschatz-Duell</h1><p>Erinnert ihr euch an eure Wörter? Lest die Erklärung, sprecht kurz darüber und wählt gemeinsam das passende Wort.</p><p><b>So geht’s:</b> Zehn Fragen pro Runde. Danach könnt ihr weiterspielen oder schwierige Wörter wiederholen.</p><p class="muted">${words.length} Wörter aus euren bisherigen Wortschatzlisten und den Adjektiven.</p><button class="primary" id="start">Los geht’s →</button>`;document.querySelector('#start').onclick=()=>{queue=shuffle(words);wrong=[];startRound('all')}}
+function startRound(m){mode=m;let pool=m==='wrong'?shuffle(wrong):queue;if(!pool.length){finish();return}round=pool.slice(0,10);if(m==='all')queue=queue.slice(round.length);else wrong=pool.slice(round.length);pos=0;score=0;render()}
+function render(){answered=false;let q=round[pos];let similar=[['beenden','abschließen'],['anfangen','eröffnen'],['die Lehre','die Ausbildung'],['die Erfahrung','die Erinnerung'],['mitnehmen','mitbringen'],['kennenlernen','treffen'],['das Glück','glücklich','fröhlich'],['krank','schwach'],['ängstlich','schüchtern'],['traurig','weinen']];let conflicts=new Set((similar.find(g=>g.includes(q.word))||[]));let options=shuffle([q,...shuffle(words.filter(x=>x.word!==q.word&&!conflicts.has(x.word))).slice(0,3)]);app.innerHTML=`<span class="badge">${mode==='wrong'?'Wiederholung':'Runde'} · Frage ${pos+1} / ${round.length}</span><div class="progress"><div style="width:${pos/round.length*100}%"></div></div><p class="muted">Welches Wort passt zur Erklärung?</p><h2>${e(q.clue)}</h2><div class="options">${options.map((o,i)=>`<button class="opt" data-i="${i}">${e(o.word)}</button>`).join('')}</div><div class="status" aria-live="polite"></div><button class="primary hidden" id="next">Weiter →</button><p class="muted small">Sprecht zuerst zu zweit, dann klickt ihr.</p>`;let btns=[...app.querySelectorAll('.opt')];btns.forEach((b,i)=>b.onclick=()=>{if(answered)return;answered=true;let ok=options[i].word===q.word;if(ok)score++;else if(!wrong.some(x=>x.word===q.word))wrong.push(q);btns.forEach((x,j)=>{x.disabled=true;if(options[j].word===q.word)x.classList.add('correct')});if(!ok)b.classList.add('wrong');app.querySelector('.status').textContent=ok?'Richtig! ✓':'Fast! Die Lösung ist: '+q.word;let n=app.querySelector('#next');n.classList.remove('hidden');n.onclick=()=>{pos++;if(pos<round.length)render();else finish()}})}
+function finish(){app.innerHTML=`<span class="badge">Geschafft!</span><h1>${score} von ${round.length} richtig</h1><p>Besprecht die Wörter, die noch schwierig waren.</p><p class="muted">${queue.length} Wörter warten noch in eurem Durchgang. ${wrong.length} Wörter könnt ihr wiederholen.</p><div class="actions">${queue.length?'<button class="primary" id="more">Nächste Runde →</button>':''}${wrong.length?'<button class="secondary" id="retry">Schwierige Wörter üben</button>':''}<button class="secondary" id="restart">Neu starten</button></div>`;let more=app.querySelector('#more'),retry=app.querySelector('#retry');if(more)more.onclick=()=>startRound('all');if(retry)retry.onclick=()=>startRound('wrong');app.querySelector('#restart').onclick=home}
+home();</script></body></html>
