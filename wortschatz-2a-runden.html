@@ -5,45 +5,45 @@ const raw=`besichtigen|Eine Stadt oder ein Schloss als Tourist besuchen.
 zunehmen|Schwerer werden: mehr Kilo wiegen.
 genießen|Etwas mit Freude erleben, zum Beispiel einen Urlaub.
 geschieden|Die Ehe ist offiziell beendet.
-die Ausbildung|Man lernt einen Beruf, zum Beispiel in einer Firma.
+die Ausbildung|Nach der Schule lernt man einen Beruf. Man macht eine ...
 fließend|Eine Sprache sehr gut und ohne große Pausen sprechen.
 die Innenstadt|Der zentrale Teil einer Stadt.
 die Verwandten|Personen aus der Familie, zum Beispiel Onkel und Tanten.
-der Verein|Eine Gruppe von Menschen mit einem gemeinsamen Interesse, zum Beispiel Sport.
-sich anmelden|Sich offiziell für einen Kurs registrieren.
+der Verein|Menschen machen zusammen Sport oder Musik. Sie sind in einem ...
+sich anmelden|Ich möchte einen Kurs machen. Ich schreibe meinen Namen auf eine Liste.
 die Speisekarte|Hier stehen die Gerichte und Getränke in einem Restaurant.
 die Rechnung|Am Ende im Restaurant steht hier, wie viel man bezahlen muss.
-verbieten|Sagen: Das darf man nicht tun.
-sich entscheiden|Aus mehreren Möglichkeiten eine wählen.
-empfehlen|Sagen, dass etwas gut ist und jemand es probieren sollte.
-teilnehmen|Bei einem Kurs oder einer Veranstaltung mitmachen.
-aus Versehen|Ohne Absicht: Man wollte es nicht machen.
-verschlafen|Zu spät aufwachen und deshalb zu spät kommen.
-der Arbeitnehmer|Eine Person, die für eine Firma arbeitet.
-abschließen|Eine Ausbildung erfolgreich zu Ende machen.
-weitersuchen|Nicht aufhören zu suchen, obwohl man noch nichts gefunden hat.
-verzeihen|Nach einem Fehler nicht mehr böse auf jemanden sein.
+verbieten|Sagen: Das darfst du nicht machen.
+sich entscheiden|Es gibt mehrere Möglichkeiten. Ich wähle eine.
+empfehlen|Das Restaurant ist gut. Ich sage zu dir: Geh auch einmal hin!
+teilnehmen|Bei einem Kurs oder einem Fest dabei sein.
+aus Versehen|Ohne Absicht: Ich wollte es nicht machen.
+verschlafen|Ich wache zu spät auf und komme zu spät zum Kurs.
+der Arbeitnehmer|Eine Person arbeitet für eine Firma. Sie ist ...
+abschließen|Eine Ausbildung zu Ende machen und die letzte Prüfung bestehen.
+weitersuchen|Ich habe noch keine Wohnung gefunden. Ich suche weiter.
+verzeihen|Du hast einen Fehler gemacht. Ich bin jetzt nicht mehr böse auf dich.
 der Regenbogen|Nach dem Regen sieht man manchmal einen bunten Bogen am Himmel.
-die Überstunden|Man arbeitet länger als die normale Arbeitszeit.
-mitnehmen|Eine Person oder Sache von hier an einen anderen Ort bringen.
-einverstanden|Eine Idee ist gut für mich. Ich sage: Ja, ...!
-absagen|Sagen, dass man zu einem geplanten Treffen nicht kommen kann, oder das Treffen nicht stattfinden lassen.
-zusagen|Eine Einladung annehmen und sagen, dass man kommt.
-vorschlagen|Eine Idee nennen, zum Beispiel: Gehen wir ins Kino!
-sich verabreden|Mit jemandem ein Treffen zu einer bestimmten Zeit planen.
-unpünktlich|Nicht zur vereinbarten Zeit, sondern zu spät kommen.
+die Überstunden|Ich arbeite heute zwei Stunden länger als normal. Ich mache ...
+mitnehmen|Ich gehe zu Ben und bringe meinen Hund auch dorthin.
+einverstanden|A: Treffen wir uns um acht? B: Ja, ich bin ...!
+absagen|Ich kann heute nicht kommen. Ich sage das Treffen ...
+zusagen|Ich habe eine Einladung und sage: Ja, ich komme gern!
+vorschlagen|Ich habe eine Idee. Ich sage: Gehen wir morgen ins Kino!
+sich verabreden|Ich treffe Anna morgen um acht. Wir ... uns für morgen um acht.
+unpünktlich|Der Kurs beginnt um sechs. Luca kommt um halb sieben. Er ist ...
 verdienen|Für seine Arbeit Geld bekommen.
-die Erfahrung|Man lernt etwas durch das, was man selbst erlebt oder gemacht hat.
-die Lehre|Man lernt einen Beruf in einer Firma und in der Berufsschule.
-anstrengend|Etwas kostet viel Kraft; danach ist man sehr müde.
-übersetzen|Einen Text in eine andere Sprache übertragen.
-freiwillig|Man macht etwas, weil man es möchte, nicht weil man muss.
-leihen|Jemandem etwas für eine bestimmte Zeit geben; danach bekommt man es zurück.
-das Handwerk|Zum Beispiel Bäcker und Tischler arbeiten in diesem Bereich.
-sich beeilen|Schnell machen, weil man wenig Zeit hat.`;
+die Erfahrung|Ich habe viel gelernt. Das war eine wichtige ...
+die Lehre|In einer Firma und in der Berufsschule lernt man einen Beruf. Man macht eine ...
+anstrengend|Die Arbeit ist schwer. Am Abend bin ich sehr müde.
+übersetzen|Einen Text zum Beispiel vom Deutschen ins Spanische übertragen.
+freiwillig|Ich muss nicht helfen. Ich mache es, weil ich es möchte.
+leihen|Ich gebe dir mein Buch. Morgen gibst du es mir zurück.
+das Handwerk|Bäcker und Tischler haben diesen Beruf. Sie arbeiten im ...
+sich beeilen|Der Zug fährt gleich. Wir müssen schnell sein!`;
 const words=raw.split('\n').map(s=>{let [word,clue]=s.split('|');return {word,clue}});if(words.some(x=>!x.word||!x.clue)||new Set(words.map(x=>x.word)).size!==words.length)throw Error('Wortliste prüfen');
 const app=document.querySelector('#app');document.querySelector('#total').textContent=words.length+' Wörter';let queue=[],wrong=[],round=[],pos=0,score=0,answered=false,mode='all';const shuffle=a=>{let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};const e=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function home(){app.innerHTML=`<span class="badge">Gemeinsam spielen · ein Gerät pro Paar</span><h1>Wortschatz-Duell</h1><p>Erinnert ihr euch an eure Wörter? Lest die Erklärung, sprecht kurz darüber und wählt gemeinsam das passende Wort.</p><p><b>So geht’s:</b> Zehn Fragen pro Runde. Danach könnt ihr weiterspielen oder schwierige Wörter wiederholen.</p><p class="muted">${words.length} ausgewählte Wörter aus euren bisherigen Wortschatzlisten.</p><button class="primary" id="start">Los geht’s →</button>`;document.querySelector('#start').onclick=()=>{queue=shuffle(words);wrong=[];startRound('all')}}
+function home(){app.innerHTML=`<span class="badge">Gemeinsam spielen · ein Gerät pro Paar</span><h1>Wortschatz-Duell</h1><p>Erinnert ihr euch an eure Wörter? Lest die Erklärung, sprecht kurz zusammen und wählt gemeinsam das passende Wort.</p><p><b>So geht’s:</b> Zehn Fragen pro Runde. Danach könnt ihr weiterspielen oder schwierige Wörter wiederholen.</p><p class="muted">${words.length} ausgewählte Wörter aus euren bisherigen Wortschatzlisten.</p><button class="primary" id="start">Los geht’s →</button>`;document.querySelector('#start').onclick=()=>{queue=shuffle(words);wrong=[];startRound('all')}}
 function startRound(m){mode=m;let pool=m==='wrong'?shuffle(wrong):queue;if(!pool.length){finish();return}round=pool.slice(0,10);if(m==='all')queue=queue.slice(round.length);else wrong=pool.slice(round.length);pos=0;score=0;render()}
 function render(){answered=false;let q=round[pos];let similar=[['beenden','abschließen'],['anfangen','eröffnen'],['die Lehre','die Ausbildung'],['die Erfahrung','die Erinnerung'],['mitnehmen','mitbringen'],['kennenlernen','treffen'],['das Glück','glücklich','fröhlich'],['krank','schwach'],['ängstlich','schüchtern'],['traurig','weinen']];let conflicts=new Set((similar.find(g=>g.includes(q.word))||[]));let options=shuffle([q,...shuffle(words.filter(x=>x.word!==q.word&&!conflicts.has(x.word))).slice(0,3)]);app.innerHTML=`<span class="badge">${mode==='wrong'?'Wiederholung':'Runde'} · Frage ${pos+1} / ${round.length}</span><div class="progress"><div style="width:${pos/round.length*100}%"></div></div><p class="muted">Welches Wort passt zur Erklärung?</p><h2>${e(q.clue)}</h2><div class="options">${options.map((o,i)=>`<button class="opt" data-i="${i}">${e(o.word)}</button>`).join('')}</div><div class="status" aria-live="polite"></div><button class="primary hidden" id="next">Weiter →</button><p class="muted small">Sprecht zuerst zu zweit, dann klickt ihr.</p>`;let btns=[...app.querySelectorAll('.opt')];btns.forEach((b,i)=>b.onclick=()=>{if(answered)return;answered=true;let ok=options[i].word===q.word;if(ok)score++;else if(!wrong.some(x=>x.word===q.word))wrong.push(q);btns.forEach((x,j)=>{x.disabled=true;if(options[j].word===q.word)x.classList.add('correct')});if(!ok)b.classList.add('wrong');app.querySelector('.status').textContent=ok?'Richtig! ✓':'Fast! Die Lösung ist: '+q.word;let n=app.querySelector('#next');n.classList.remove('hidden');n.onclick=()=>{pos++;if(pos<round.length)render();else finish()}})}
 function finish(){app.innerHTML=`<span class="badge">Geschafft!</span><h1>${score} von ${round.length} richtig</h1><p>Besprecht die Wörter, die noch schwierig waren.</p><p class="muted">${queue.length} Wörter warten noch in eurem Durchgang. ${wrong.length} Wörter könnt ihr wiederholen.</p><div class="actions">${queue.length?'<button class="primary" id="more">Nächste Runde →</button>':''}${wrong.length?'<button class="secondary" id="retry">Schwierige Wörter üben</button>':''}<button class="secondary" id="restart">Neu starten</button></div>`;let more=app.querySelector('#more'),retry=app.querySelector('#retry');if(more)more.onclick=()=>startRound('all');if(retry)retry.onclick=()=>startRound('wrong');app.querySelector('#restart').onclick=home}
