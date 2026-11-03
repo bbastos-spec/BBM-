@@ -2,36 +2,25 @@
 :root{font-family:system-ui,sans-serif;color:#19334b;background:#f4f8f6}*{box-sizing:border-box}body{margin:0}.wrap{max-width:850px;margin:auto;padding:22px 16px}header{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:800;letter-spacing:.08em;font-size:.85rem;color:#176b60}.card{background:white;border:1px solid #d8e5df;border-radius:20px;padding:clamp(20px,4vw,36px);margin-top:18px;box-shadow:0 10px 30px #163d2e0d}h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin:.25em 0}h2{line-height:1.3;font-size:clamp(1.3rem,3vw,1.8rem)}p{line-height:1.55}.badge{display:inline-block;background:#e1f4eb;color:#145c4e;border-radius:30px;padding:7px 13px;font-weight:700;font-size:.85rem}.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:25px 0}button{font:inherit;border:0;cursor:pointer} .opt{background:#f7faf9;border:2px solid #dbe8e2;border-radius:12px;padding:15px;text-align:left;color:#17334b;font-weight:650;min-height:60px}.opt:hover:not(:disabled){border-color:#278875;background:#ecf9f4}.opt.correct{border-color:#16805d;background:#def6e7}.opt.wrong{border-color:#b84646;background:#fce8e7}.opt:disabled{opacity:1;cursor:default}.primary,.secondary{border-radius:11px;padding:13px 20px;font-weight:750}.primary{background:#176f60;color:white}.secondary{background:#edf4f1;color:#174d43}.actions{display:flex;gap:10px;flex-wrap:wrap}.muted{color:#587064;font-size:.94rem}.progress{height:9px;background:#e7efeb;border-radius:8px;overflow:hidden;margin-top:15px}.progress div{height:100%;background:#29a686;transition:width .25s}.status{min-height:2.3em;font-weight:700}.small{font-size:.86rem}.count{color:#44655b;font-weight:650}.hidden{display:none}ul{padding-left:22px}li{margin:.5em 0}@media(max-width:520px){.options{grid-template-columns:1fr}.wrap{padding:16px 12px}}
 </style></head><body><main class="wrap"><header><div class="brand">2A · WORTSCHATZ</div><div class="count" id="total"></div></header><div id="app" class="card"></div></main><script>
 const raw=`besichtigen|Eine Stadt oder ein Schloss als Tourist besuchen.
-zunehmen|Schwerer werden: mehr Kilo wiegen.
-genießen|Etwas mit Freude erleben, zum Beispiel einen Urlaub.
-geschieden|Die Ehe ist offiziell beendet.
 die Ausbildung|Nach der Schule lernt man einen Beruf. Man macht eine ...
 fließend|Eine Sprache sehr gut und ohne große Pausen sprechen.
-die Innenstadt|Der zentrale Teil einer Stadt.
 die Verwandten|Personen aus der Familie, zum Beispiel Onkel und Tanten.
-der Verein|Menschen machen zusammen Sport oder Musik. Sie sind in einem ...
-sich anmelden|Ich möchte einen Kurs machen. Ich schreibe meinen Namen auf eine Liste.
 die Speisekarte|Hier stehen die Gerichte und Getränke in einem Restaurant.
 die Rechnung|Am Ende im Restaurant steht hier, wie viel man bezahlen muss.
-verbieten|Sagen: Das darfst du nicht machen.
-sich entscheiden|Es gibt mehrere Möglichkeiten. Ich wähle eine.
 empfehlen|Das Restaurant ist gut. Ich sage zu dir: Geh auch einmal hin!
-teilnehmen|Bei einem Kurs oder einem Fest dabei sein.
 aus Versehen|Ohne Absicht: Ich wollte es nicht machen.
 verschlafen|Ich wache zu spät auf und komme zu spät zum Kurs.
 der Arbeitnehmer|Eine Person arbeitet für eine Firma. Sie ist ...
 abschließen|Eine Ausbildung zu Ende machen und die letzte Prüfung bestehen.
-weitersuchen|Ich habe noch keine Wohnung gefunden. Ich suche weiter.
 verzeihen|Du hast einen Fehler gemacht. Ich bin jetzt nicht mehr böse auf dich.
 der Regenbogen|Nach dem Regen sieht man manchmal einen bunten Bogen am Himmel.
 die Überstunden|Ich arbeite heute zwei Stunden länger als normal. Ich mache ...
-mitnehmen|Ich gehe zu Ben und bringe meinen Hund auch dorthin.
+mitnehmen|Marvin fährt zu Ben. Sein Hund fährt auch mit. Marvin möchte den Hund ...
 einverstanden|A: Treffen wir uns um acht? B: Ja, ich bin ...!
 absagen|Ich kann heute nicht kommen. Ich sage das Treffen ...
 zusagen|Ich habe eine Einladung und sage: Ja, ich komme gern!
 vorschlagen|Ich habe eine Idee. Ich sage: Gehen wir morgen ins Kino!
 sich verabreden|Ich treffe Anna morgen um acht. Wir ... uns für morgen um acht.
-unpünktlich|Der Kurs beginnt um sechs. Luca kommt um halb sieben. Er ist ...
 verdienen|Für seine Arbeit Geld bekommen.
 die Erfahrung|Ich habe viel gelernt. Das war eine wichtige ...
 die Lehre|In einer Firma und in der Berufsschule lernt man einen Beruf. Man macht eine ...
@@ -40,7 +29,18 @@ anstrengend|Die Arbeit ist schwer. Am Abend bin ich sehr müde.
 freiwillig|Ich muss nicht helfen. Ich mache es, weil ich es möchte.
 leihen|Ich gebe dir mein Buch. Morgen gibst du es mir zurück.
 das Handwerk|Bäcker und Tischler haben diesen Beruf. Sie arbeiten im ...
-sich beeilen|Der Zug fährt gleich. Wir müssen schnell sein!`;
+sich beeilen|Der Zug fährt gleich. Wir müssen schnell sein!
+die Bankkauffrau|Sie arbeitet in einer Bank und berät Kunden.
+die Flugbegleiterin|Sie arbeitet im Flugzeug und bringt den Gästen Getränke.
+die Krankenpflegerin|Sie arbeitet im Krankenhaus und versorgt kranke Menschen.
+die Kellnerin|Sie arbeitet im Restaurant und bringt den Gästen das Essen.
+mieten|Ich bezahle Geld und benutze ein Auto oder eine Wohnung für eine bestimmte Zeit.
+unterrichten|Sie ist Lehrerin und gibt Deutschkurse.
+einladen|Ich möchte mit Freunden feiern und bitte sie, zu meinem Fest zu kommen.
+beenden|Ein Projekt oder eine Arbeit zu Ende bringen.
+die Hochzeit|Zwei Personen heiraten. Das Fest heißt ...
+der Regenschirm|Es regnet. Ich nehme ihn mit und bleibe trocken.
+heiraten|Zwei Menschen sagen beim Standesamt Ja und sind dann ein Ehepaar.`;
 const words=raw.split('\n').map(s=>{let [word,clue]=s.split('|');return {word,clue}});if(words.some(x=>!x.word||!x.clue)||new Set(words.map(x=>x.word)).size!==words.length)throw Error('Wortliste prüfen');
 const app=document.querySelector('#app');document.querySelector('#total').textContent=words.length+' Wörter';let queue=[],wrong=[],round=[],pos=0,score=0,answered=false,mode='all';const shuffle=a=>{let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};const e=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function home(){app.innerHTML=`<span class="badge">Gemeinsam spielen · ein Gerät pro Paar</span><h1>Wortschatz-Duell</h1><p>Erinnert ihr euch an eure Wörter? Lest die Erklärung, sprecht kurz zusammen und wählt gemeinsam das passende Wort.</p><p><b>So geht’s:</b> Zehn Fragen pro Runde. Danach könnt ihr weiterspielen oder schwierige Wörter wiederholen.</p><p class="muted">${words.length} ausgewählte Wörter aus euren bisherigen Wortschatzlisten.</p><button class="primary" id="start">Los geht’s →</button>`;document.querySelector('#start').onclick=()=>{queue=shuffle(words);wrong=[];startRound('all')}}
