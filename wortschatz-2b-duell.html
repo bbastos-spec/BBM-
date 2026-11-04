@@ -1,0 +1,50 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wortschatz-Duell · 2B</title><style>
+:root{font-family:system-ui,sans-serif;color:#19334b;background:#f4f8f6}*{box-sizing:border-box}body{margin:0}.wrap{max-width:850px;margin:auto;padding:22px 16px}header{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:800;letter-spacing:.08em;font-size:.85rem;color:#176b60}.card{background:white;border:1px solid #d8e5df;border-radius:20px;padding:clamp(20px,4vw,36px);margin-top:18px;box-shadow:0 10px 30px #163d2e0d}h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin:.25em 0}h2{line-height:1.3;font-size:clamp(1.3rem,3vw,1.8rem)}p{line-height:1.55}.badge{display:inline-block;background:#e1f4eb;color:#145c4e;border-radius:30px;padding:7px 13px;font-weight:700;font-size:.85rem}.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:25px 0}button{font:inherit;border:0;cursor:pointer} .opt{background:#f7faf9;border:2px solid #dbe8e2;border-radius:12px;padding:15px;text-align:left;color:#17334b;font-weight:650;min-height:60px}.opt:hover:not(:disabled){border-color:#278875;background:#ecf9f4}.opt.correct{border-color:#16805d;background:#def6e7}.opt.wrong{border-color:#b84646;background:#fce8e7}.opt:disabled{opacity:1;cursor:default}.primary,.secondary{border-radius:11px;padding:13px 20px;font-weight:750}.primary{background:#176f60;color:white}.secondary{background:#edf4f1;color:#174d43}.actions{display:flex;gap:10px;flex-wrap:wrap}.muted{color:#587064;font-size:.94rem}.progress{height:9px;background:#e7efeb;border-radius:8px;overflow:hidden;margin-top:15px}.progress div{height:100%;background:#29a686;transition:width .25s}.status{min-height:2.3em;font-weight:700}.small{font-size:.86rem}.count{color:#44655b;font-weight:650}.hidden{display:none}ul{padding-left:22px}li{margin:.5em 0}@media(max-width:520px){.options{grid-template-columns:1fr}.wrap{padding:16px 12px}}
+</style></head><body><main class="wrap"><header><div class="brand">2B · WORTSCHATZ</div><div class="count" id="total"></div></header><div id="app" class="card"></div></main><script>
+const raw=`der Stau|Auf der Autobahn stehen viele Autos. Sie kommen kaum weiter.
+die Verspätung|Der Zug kommt später als geplant. Er hat eine ...
+der Anschluss|Der nächste Zug oder Bus für die Weiterfahrt.
+die Schrift|Die Form von geschriebenen Buchstaben.
+der Führerschein|Dieses Dokument braucht man, wenn man Auto fahren möchte.
+der Neffe|Der Sohn meiner Schwester oder meines Bruders ist mein ...
+die Kursleiterin|Sie leitet einen Kurs und unterrichtet die Gruppe.
+der Prüfer|Er stellt bei einer Prüfung Fragen und bewertet die Antworten.
+herunterladen|Eine App aus dem Internet auf das Handy holen.
+eingeben|Eine PIN mit der Tastatur schreiben.
+übernachten|An einem Ort eine Nacht schlafen.
+sich registrieren|Ein neues Konto mit den eigenen Daten erstellen.
+die Matte|Beim Yoga liegt man oft auf dieser Unterlage.
+der Schläger|Beim Tennis hält man dieses Sportgerät in der Hand.
+das Paddel|Mit diesem Gegenstand bewegt man ein Kanu durch das Wasser.
+die Kaution|Geld als Sicherheit: Später bekommt man es normalerweise zurück.
+umsteigen|Man verlässt einen Zug und fährt mit einem anderen weiter.
+tanken|Benzin oder Diesel in ein Fahrzeug füllen.
+tauchen|Unter Wasser schwimmen.
+losfahren|Eine Fahrt beginnen.
+leihen|Ein Fahrrad für eine Zeit benutzen und später zurückgeben.
+auswählen|Sich für eine von mehreren Möglichkeiten entscheiden.
+abstellen|Ein Fahrrad an einen Ort stellen und dort lassen.
+die Strecke|Der Weg zwischen zwei Orten.
+besetzt|Dieser Platz ist schon belegt und deshalb nicht frei.
+kostenlos|Dafür muss man nichts bezahlen.
+ungewöhnlich|Anders als normal oder erwartet.
+der Zufall|Etwas passiert ungeplant und unerwartet.
+versprechen|Sagen, dass man etwas sicher tun wird.
+erreichen|Jemanden telefonisch kontaktieren können.
+der Kinderwagen|Darin liegt ein kleines Kind, wenn man mit ihm spazieren geht.
+der Wohnungsschlüssel|Damit öffnet man die Tür zur eigenen Wohnung.
+das Gewitter|Wetter mit Blitz und Donner.
+pendeln|Regelmäßig zwischen Wohnung und Arbeitsplatz hin- und herfahren.
+genervt|Wenn etwas sehr stört und man sich darüber ärgert.
+sinnvoll|Gut und nützlich für einen bestimmten Zweck.
+verschieben|Einen Termin auf einen späteren Zeitpunkt legen.
+der Stoff|Alles, was man für eine Prüfung lernen muss.
+zurechtkommen|Eine schwierige Situation gut bewältigen können.
+unternehmen|Etwas zusammen machen, zum Beispiel einen Ausflug.`;
+const words=raw.split('\n').map(s=>{let [word,clue]=s.split('|');return {word,clue}});if(words.some(x=>!x.word||!x.clue)||new Set(words.map(x=>x.word)).size!==words.length)throw Error('Wortliste prüfen');
+const app=document.querySelector('#app');document.querySelector('#total').textContent=words.length+' Wörter';let queue=[],wrong=[],round=[],pos=0,score=0,answered=false,mode='all';const shuffle=a=>{let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};const e=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function home(){app.innerHTML=`<span class="badge">Gemeinsam spielen · ein Gerät pro Paar</span><h1>Wortschatz-Duell</h1><p>Erinnert ihr euch an eure Wörter? Lest die Erklärung, sprecht kurz zusammen und wählt gemeinsam das passende Wort.</p><p><b>So geht’s:</b> Zehn Fragen pro Runde. Danach könnt ihr weiterspielen oder schwierige Wörter wiederholen.</p><p class="muted">${words.length} ausgewählte Wörter aus euren bisherigen Wortschatzlisten.</p><button class="primary" id="start">Los geht’s →</button>`;document.querySelector('#start').onclick=()=>{queue=shuffle(words);wrong=[];startRound('all')}}
+function startRound(m){mode=m;let pool=m==='wrong'?shuffle(wrong):queue;if(!pool.length){finish();return}round=pool.slice(0,10);if(m==='all')queue=queue.slice(round.length);else wrong=pool.slice(round.length);pos=0;score=0;render()}
+function render(){answered=false;let q=round[pos];let similar=[['beenden','abschließen'],['anfangen','eröffnen'],['die Lehre','die Ausbildung'],['die Erfahrung','die Erinnerung'],['mitnehmen','mitbringen'],['kennenlernen','treffen'],['das Glück','glücklich','fröhlich'],['krank','schwach'],['ängstlich','schüchtern'],['traurig','weinen']];let conflicts=new Set((similar.find(g=>g.includes(q.word))||[]));let options=shuffle([q,...shuffle(words.filter(x=>x.word!==q.word&&!conflicts.has(x.word))).slice(0,3)]);app.innerHTML=`<span class="badge">${mode==='wrong'?'Wiederholung':'Runde'} · Frage ${pos+1} / ${round.length}</span><div class="progress"><div style="width:${pos/round.length*100}%"></div></div><p class="muted">Welches Wort passt zur Erklärung?</p><h2>${e(q.clue)}</h2><div class="options">${options.map((o,i)=>`<button class="opt" data-i="${i}">${e(o.word)}</button>`).join('')}</div><div class="status" aria-live="polite"></div><button class="primary hidden" id="next">Weiter →</button><p class="muted small">Sprecht zuerst zu zweit, dann klickt ihr.</p>`;let btns=[...app.querySelectorAll('.opt')];btns.forEach((b,i)=>b.onclick=()=>{if(answered)return;answered=true;let ok=options[i].word===q.word;if(ok)score++;else if(!wrong.some(x=>x.word===q.word))wrong.push(q);btns.forEach((x,j)=>{x.disabled=true;if(options[j].word===q.word)x.classList.add('correct')});if(!ok)b.classList.add('wrong');app.querySelector('.status').textContent=ok?'Richtig! ✓':'Fast! Die Lösung ist: '+q.word;let n=app.querySelector('#next');n.classList.remove('hidden');n.onclick=()=>{pos++;if(pos<round.length)render();else finish()}})}
+function finish(){app.innerHTML=`<span class="badge">Geschafft!</span><h1>${score} von ${round.length} richtig</h1><p>Besprecht die Wörter, die noch schwierig waren.</p><p class="muted">${queue.length} Wörter warten noch in eurem Durchgang. ${wrong.length} Wörter könnt ihr wiederholen.</p><div class="actions">${queue.length?'<button class="primary" id="more">Nächste Runde →</button>':''}${wrong.length?'<button class="secondary" id="retry">Schwierige Wörter üben</button>':''}<button class="secondary" id="restart">Neu starten</button></div>`;let more=app.querySelector('#more'),retry=app.querySelector('#retry');if(more)more.onclick=()=>startRound('all');if(retry)retry.onclick=()=>startRound('wrong');app.querySelector('#restart').onclick=home}
+home();</script></body></html>
