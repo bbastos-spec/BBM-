@@ -4,7 +4,7 @@
 const raw=`der Stau|Auf der Autobahn stehen viele Autos. Sie kommen kaum weiter.
 die Verspätung|Der Zug kommt später als geplant. Er hat eine ...
 der Anschluss|Der nächste Zug oder Bus für die Weiterfahrt.
-die Schrift|Die Form von geschriebenen Buchstaben.
+die Schrift|Chinesisch und Arabisch haben unterschiedliche ...
 der Führerschein|Dieses Dokument braucht man, wenn man Auto fahren möchte.
 der Neffe|Der Sohn meiner Schwester oder meines Bruders ist mein ...
 die Kursleiterin|Sie leitet einen Kurs und unterrichtet die Gruppe.
@@ -18,29 +18,29 @@ der Schläger|Beim Tennis hält man dieses Sportgerät in der Hand.
 das Paddel|Mit diesem Gegenstand bewegt man ein Kanu durch das Wasser.
 die Kaution|Geld als Sicherheit: Später bekommt man es normalerweise zurück.
 umsteigen|Man verlässt einen Zug und fährt mit einem anderen weiter.
-tanken|Benzin oder Diesel in ein Fahrzeug füllen.
-tauchen|Unter Wasser schwimmen.
-losfahren|Eine Fahrt beginnen.
 leihen|Ein Fahrrad für eine Zeit benutzen und später zurückgeben.
 auswählen|Sich für eine von mehreren Möglichkeiten entscheiden.
 abstellen|Ein Fahrrad an einen Ort stellen und dort lassen.
-die Strecke|Der Weg zwischen zwei Orten.
-besetzt|Dieser Platz ist schon belegt und deshalb nicht frei.
-kostenlos|Dafür muss man nichts bezahlen.
-ungewöhnlich|Anders als normal oder erwartet.
-der Zufall|Etwas passiert ungeplant und unerwartet.
-versprechen|Sagen, dass man etwas sicher tun wird.
-erreichen|Jemanden telefonisch kontaktieren können.
-der Kinderwagen|Darin liegt ein kleines Kind, wenn man mit ihm spazieren geht.
-der Wohnungsschlüssel|Damit öffnet man die Tür zur eigenen Wohnung.
-das Gewitter|Wetter mit Blitz und Donner.
-pendeln|Regelmäßig zwischen Wohnung und Arbeitsplatz hin- und herfahren.
-genervt|Wenn etwas sehr stört und man sich darüber ärgert.
-sinnvoll|Gut und nützlich für einen bestimmten Zweck.
+bearbeiten|Ein Foto verändern, zum Beispiel heller machen.
+besitzen|Etwas haben: Es gehört mir.
+gebraucht|Schon benutzt und deshalb nicht mehr neu.
+notwendig|Das braucht man unbedingt.
+sich beschweren|Sagen, dass man mit etwas nicht zufrieden ist.
+die Menge|Wie viel ist das? Eine kleine oder eine große ...
+die Einführung|Die ersten Informationen zu einem neuen Thema.
+sowieso|Ich muss das auf jeden Fall machen, ganz egal, was passiert.
 verschieben|Einen Termin auf einen späteren Zeitpunkt legen.
 der Stoff|Alles, was man für eine Prüfung lernen muss.
-zurechtkommen|Eine schwierige Situation gut bewältigen können.
-unternehmen|Etwas zusammen machen, zum Beispiel einen Ausflug.`;
+kapieren|Etwas verstehen: Jetzt ... ich die Regel!
+durchatmen|Vor einer Prüfung ruhig und tief atmen.
+freimachen|Ich brauche Zeit zum Lernen. Deshalb mache ich mir den Nachmittag ...
+zurechtkommen|Mit einer schwierigen Situation gut umgehen können.
+übrigens|Ein Wort für eine zusätzliche Information: ... morgen beginnt der Kurs früher.
+pendeln|Regelmäßig zwischen Wohnung und Arbeitsplatz hin- und herfahren.
+genervt|Etwas stört mich sehr und ich ärgere mich darüber. Ich bin ...
+sinnvoll|Gut und nützlich für einen bestimmten Zweck.
+das Gewitter|Wetter mit Blitz und Donner.
+erreichen|Jemanden telefonisch kontaktieren können.`;
 const words=raw.split('\n').map(s=>{let [word,clue]=s.split('|');return {word,clue}});if(words.some(x=>!x.word||!x.clue)||new Set(words.map(x=>x.word)).size!==words.length)throw Error('Wortliste prüfen');
 const app=document.querySelector('#app');document.querySelector('#total').textContent=words.length+' Wörter';let queue=[],wrong=[],round=[],pos=0,score=0,answered=false,mode='all';const shuffle=a=>{let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};const e=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function home(){app.innerHTML=`<span class="badge">Gemeinsam spielen · ein Gerät pro Paar</span><h1>Wortschatz-Duell</h1><p>Erinnert ihr euch an eure Wörter? Lest die Erklärung, sprecht kurz zusammen und wählt gemeinsam das passende Wort.</p><p><b>So geht’s:</b> Zehn Fragen pro Runde. Danach könnt ihr weiterspielen oder schwierige Wörter wiederholen.</p><p class="muted">${words.length} ausgewählte Wörter aus euren bisherigen Wortschatzlisten.</p><button class="primary" id="start">Los geht’s →</button>`;document.querySelector('#start').onclick=()=>{queue=shuffle(words);wrong=[];startRound('all')}}
